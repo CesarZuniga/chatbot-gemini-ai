@@ -2,10 +2,11 @@
   <div class="q-pa-md row justify-center full-width">
     <div style="width: 100%; ">
       <template v-for=" msg in value" v-bind:key="msg">
-        <q-chat-message v-if="msg.send" :avatar="user?.photoURL || undefined" :name="user?.displayName || undefined" sent>
+        <q-chat-message v-if="msg.send" :avatar="user?.photoURL || undefined" :name="user?.displayName || undefined" sent
+          bg-color="teal-1">
           <div v-html="msg.text"></div>
         </q-chat-message>
-        <q-chat-message v-else avatar="logo.png" :name="'Gemini'">
+        <q-chat-message v-else avatar="logo.png" :name="'Gemini'" bg-color="blue-grey-1" text-color="">
           <q-spinner-dots v-if="msg.loading" size="2rem" />
           <div v-else v-html="msg.text"></div>
         </q-chat-message>

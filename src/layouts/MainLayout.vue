@@ -42,9 +42,7 @@
     <q-page-container>
       <router-view />
     </q-page-container>
-    <q-footer elevated>
-      <FooterComponent></FooterComponent>
-    </q-footer>
+
   </q-layout>
 </template>
 
@@ -52,7 +50,7 @@
 import { getAuth, signOut } from 'firebase/auth';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import FooterComponent from 'src/components/FooterComponent.vue';
+
 const router = useRouter();
 const currentUser = ref(getAuth().currentUser)
 onMounted(() => {
