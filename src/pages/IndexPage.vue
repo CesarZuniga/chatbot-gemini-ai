@@ -72,7 +72,7 @@ function sendMsg() {
       let response = result.response.text();
       for (let index = 0; index < response.length; index++) {
         response = response.replace('\n', '');
-        response = response.replace('`html', '');
+        response = response.replace('`', '');
         response = response.replace('html', '');
       }
       const index = msgs.value.findIndex(x => x.loading);
