@@ -74,7 +74,7 @@ function sendMsg() {
     },
   });
   const msg = msgs.value[msgs.value.length - 2].text;
-  chat.sendMessage(`responde solamente en formato html no markdown: ${msg}`).then(result => {
+  chat.sendMessage(`responde solamente en formato html: ${msg}`).then(result => {
     if (msgs.value.some(x => x.loading)) {
       let response = result.response.text();
       for (let index = 0; index < response.length; index++) {
