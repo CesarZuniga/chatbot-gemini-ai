@@ -1,18 +1,16 @@
 <template>
-  <q-card class=" row no-shadow" bordered>
-    <q-card-section class="col-12 text-center q-pa-lg">
+  <q-card-section class="col-12 text-center q-pb-xs q-pt-xs">
 
-      <q-btn @click="openGithub" icon="mdi-github" flat dense color="grey-8"></q-btn>
-      <!-- <q-btn icon="mdi-facebook" flat dense color="grey-8"></q-btn>
+    <q-btn @click="openGithub" icon="mdi-github" flat dense></q-btn>
+    <!-- <q-btn icon="mdi-facebook" flat dense color="grey-8"></q-btn>
       <q-btn icon="mdi-twitter" flat dense color="grey-8"></q-btn>
       <q-btn icon="mdi-instagram" flat dense color="grey-8"></q-btn> -->
 
 
-      <div class="text-body1 q-mt-sm text-grey-8 text-weight-bold">
-        © {{ new Date().getFullYear() }} Chatboot AI, Inc. All rights reserved.
-      </div>
-    </q-card-section>
-  </q-card>
+    <div class=" q-mt-sm  text-bold">
+      © {{ new Date().getFullYear() }} Chatboot AI, Inc. All rights reserved.
+    </div>
+  </q-card-section>
 </template>
 
 <script setup>

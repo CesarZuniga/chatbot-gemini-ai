@@ -42,7 +42,7 @@
     <q-page-container>
       <router-view />
     </q-page-container>
-    <q-footer>
+    <q-footer elevated>
       <FooterComponent></FooterComponent>
     </q-footer>
   </q-layout>

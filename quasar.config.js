@@ -69,9 +69,7 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      env: {
-        API_KEY: 'AIzaSyCAzeWMgfTutNFezxo9Cex0cWRgFgaF8N8'
-      },
+      env: require('dotenv').config({ path: '.env', }).parsed,
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
