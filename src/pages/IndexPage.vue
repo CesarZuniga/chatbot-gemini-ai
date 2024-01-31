@@ -74,14 +74,9 @@ function sendMsg() {
     },
   });
   const msg = msgs.value[msgs.value.length - 2].text;
-  chat.sendMessage(`responde solamente en formato html: ${msg}`).then(result => {
+  chat.sendMessage(`responde solamente en formato markdown: ${msg}`).then(result => {
     if (msgs.value.some(x => x.loading)) {
       let response = result.response.text();
-      for (let index = 0; index < response.length; index++) {
-        response = response.replace('\n', '');
-        response = response.replace('`', '');
-        response = response.replace('html', '');
-      }
       const index = msgs.value.findIndex(x => x.loading);
       msgs.value[index].loading = false;
       msgs.value[index].text = response

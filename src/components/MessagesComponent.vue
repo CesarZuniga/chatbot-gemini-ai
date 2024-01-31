@@ -8,7 +8,7 @@
         </q-chat-message>
         <q-chat-message v-else avatar="logo.png" :name="'Gemini'" bg-color="blue-grey-1" text-color="">
           <q-spinner-dots v-if="msg.loading" size="2rem" />
-          <div v-else v-html="msg.text"></div>
+          <vue-markdown v-else :source="msg.text" />
         </q-chat-message>
       </template>
     </div>
@@ -19,6 +19,7 @@
 import { computed } from 'vue'
 import { useCurrentUser } from 'vuefire'
 import { Message } from './models';
+import VueMarkdown from 'vue-markdown-render'
 const user = useCurrentUser();
 const props = defineProps({
   // v-model
