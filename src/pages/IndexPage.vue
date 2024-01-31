@@ -9,14 +9,17 @@
         <q-btn :disable="msgs.some(x => x.loading)" @click="addMsg" round dense flat icon="send" />
       </template>
     </q-input> -->
-    <q-editor placeholder="Escribe un mensaje..." :toolbar="[['send']]" max-height="7rem"
-      :disable="msgs.some(x => x.loading)" @keyup.enter="addMsg()" class="q-pt-none row col-10" v-model="text"
+    <q-editor ref="editor" placeholder="Escribe un mensaje..." :toolbar="[['send']]" max-height="7rem"
+      :disable="msgs.some(x => x.loading)" @keyup.enter="addMsg()" class="q-pt-none q-mb-sm row col-10" v-model="text"
       min-height="7rem">
       <template v-slot:send>
         <q-btn :disable="msgs.some(x => x.loading)" @click="addMsg" round dense flat icon="send" style="" />
 
       </template>
     </q-editor>
+    <q-footer reveal>
+      <FooterComponent></FooterComponent>
+    </q-footer>
   </q-page>
 </template>
 
@@ -24,16 +27,19 @@
 import MessagesComponentVue from 'src/components/MessagesComponent.vue';
 import { onMounted, ref } from 'vue';
 import { Message } from 'src/components/models';
-import { QScrollArea } from 'quasar';
+import { QEditor, QScrollArea } from 'quasar';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import FooterComponent from 'src/components/FooterComponent.vue';
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 const text = ref('');
+const editor = ref(QEditor);
 const scroll = ref(QScrollArea);
 const msgs = ref(new Array<Message>())
 onMounted(() => {
   if (sessionStorage.getItem('messages')) {
     msgs.value = JSON.parse(sessionStorage.getItem('messages') || '');
   }
+  editor.value?.focus();
 });
 function addMsg() {
   if (msgs.value.some(x => x.loading)) {
@@ -80,12 +86,14 @@ function sendMsg() {
       msgs.value[index].loading = false;
       msgs.value[index].text = response
       sessionStorage.setItem('messages', JSON.stringify(msgs.value));
+      editor.value?.focus();
     }
   }).catch(() => {
     if (msgs.value.some(x => x.loading)) {
       const index = msgs.value.findIndex(x => x.loading);
       msgs.value[index].loading = false;
       sessionStorage.setItem('messages', JSON.stringify(msgs.value));
+      editor.value?.focus();
     }
   });
 }
@@ -97,7 +105,9 @@ textarea {
 
 :deep(.q-editor__toolbars-container) {
   position: absolute;
-  left: 85%;
-  padding: 4.4rem;
+  min-width: 83vw;
+  display: flex;
+  flex-direction: row-reverse;
+  padding-top: 4.4rem;
 }
 </style>
