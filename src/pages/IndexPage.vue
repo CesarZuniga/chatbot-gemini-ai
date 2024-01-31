@@ -9,8 +9,9 @@
         <q-btn :disable="msgs.some(x => x.loading)" @click="addMsg" round dense flat icon="send" />
       </template>
     </q-input> -->
-    <q-editor :toolbar="[['send']]" max-height="7rem" :disable="msgs.some(x => x.loading)" @keyup.enter="addMsg()"
-      class="q-pt-none row col-10" v-model="text" min-height="7rem">
+    <q-editor placeholder="Escribe un mensaje..." :toolbar="[['send']]" max-height="7rem"
+      :disable="msgs.some(x => x.loading)" @keyup.enter="addMsg()" class="q-pt-none row col-10" v-model="text"
+      min-height="7rem">
       <template v-slot:send>
         <q-btn :disable="msgs.some(x => x.loading)" @click="addMsg" round dense flat icon="send" style="" />
 
