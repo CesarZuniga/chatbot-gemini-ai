@@ -8,7 +8,7 @@
 
 
     <div class=" q-mt-sm  text-bold">
-      © {{ new Date().getFullYear() }} DigiTech, Inc. All rights reserved.
+      © {{ new Date().getFullYear() }} Cesar Zuñiga, Inc. All rights reserved.
     </div>
   </q-card-section>
 </template>

@@ -9,9 +9,9 @@
         <q-btn :disable="msgs.some(x => x.loading)" @click="addMsg" round dense flat icon="send" />
       </template>
     </q-input> -->
-    <q-editor ref="editor" placeholder="Escribe un mensaje..." :toolbar="[['send']]" max-height="7rem"
-      :disable="msgs.some(x => x.loading)" @keyup.enter="addMsg()" class="q-pt-none q-mb-sm row col-10" v-model="text"
-      min-height="7rem">
+    <q-editor style="border-radius: 20px;" ref="editor" placeholder="Escribe un mensaje..." :toolbar="[['send']]"
+      max-height="6rem" :disable="msgs.some(x => x.loading)" @keyup.enter="addMsg()" class="q-pt-none q-mb-sm row col-10"
+      v-model="text" min-height="6rem">
       <template v-slot:send>
         <q-btn :disable="msgs.some(x => x.loading)" @click="addMsg" round dense flat icon="send" style="" />
 
@@ -74,7 +74,7 @@ function sendMsg() {
     },
   });
   const msg = msgs.value[msgs.value.length - 2].text;
-  chat.sendMessage(`responde solamente en formato markdown: ${msg}`).then(result => {
+  chat.sendMessage(`responde solamente en formato markdown si presenta error el formato markdown por favor corrigelo: ${msg}`).then(result => {
     if (msgs.value.some(x => x.loading)) {
       let response = result.response.text();
       const index = msgs.value.findIndex(x => x.loading);
@@ -99,10 +99,24 @@ textarea {
 }
 
 :deep(.q-editor__toolbars-container) {
+  .q-editor__toolbar {
+    border: none;
+  }
+
   position: absolute;
-  min-width: 83vw;
-  display: flex;
-  flex-direction: row-reverse;
-  padding-top: 4.4rem;
+  margin-left: 80%;
+  padding-top: 3.4rem;
+
+  @media only screen and (max-width: 480px) {
+    margin-left: 73%;
+  }
+
+  @media only screen and (max-width: 698px) and (min-width: 481px) {
+    margin-left: 76%;
+  }
+
+  @media only screen and (max-width: 960px) and (min-width: 699px) {
+    margin-left: 78%;
+  }
 }
 </style>
