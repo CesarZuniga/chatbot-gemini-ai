@@ -18,9 +18,11 @@
           bg-color="blue-grey-1"
           text-color=""
         >
-          <VMarkdownView :content="msg.text">
-            <q-inner-loading :showing="msg.loading"></q-inner-loading
-          ></VMarkdownView>
+          <VMarkdownView :content="msg.text"> </VMarkdownView>
+          <q-inner-loading
+            v-if="msg.loading"
+            :showing="msg.loading"
+          ></q-inner-loading>
         </q-chat-message>
       </template>
     </div>
