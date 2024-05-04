@@ -18,9 +18,9 @@
           bg-color="blue-grey-1"
           text-color=""
         >
-          <vue-markdown :source="msg.text">
+          <VMarkdownView :content="msg.text">
             <q-inner-loading :showing="msg.loading"></q-inner-loading
-          ></vue-markdown>
+          ></VMarkdownView>
         </q-chat-message>
       </template>
     </div>
@@ -31,7 +31,8 @@
 import { computed } from 'vue';
 import { useCurrentUser } from 'vuefire';
 import { Message } from './models';
-import VueMarkdown from 'vue-markdown';
+import { VMarkdownView } from 'vue3-markdown';
+import 'vue3-markdown/dist/style.css';
 const user = useCurrentUser();
 const props = defineProps({
   // v-model
