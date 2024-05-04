@@ -1,6 +1,6 @@
 <template>
   <q-page class="row q-pb-none items-center justify-evenly">
-    <q-scroll-area ref="scroll" style="height: 60vh; width: 85vw;">
+    <q-scroll-area ref="scroll" style="height: 60vh; width: 85vw">
       <MessagesComponentVue :messages="msgs"></MessagesComponentVue>
     </q-scroll-area>
     <!-- <q-input :disable="msgs.some(x => x.loading)" @keyup.enter="addMsg()" class="row col-10" dense outlined autogrow
@@ -9,12 +9,28 @@
         <q-btn :disable="msgs.some(x => x.loading)" @click="addMsg" round dense flat icon="send" />
       </template>
     </q-input> -->
-    <q-editor style="border-radius: 20px;" ref="editor" placeholder="Escribe un mensaje..." :toolbar="[['send']]"
-      max-height="6rem" :disable="msgs.some(x => x.loading)" @keyup.enter="addMsg()" class="q-pt-none q-mb-sm row col-10"
-      v-model="text" min-height="6rem">
+    <q-editor
+      style="border-radius: 20px"
+      ref="editor"
+      placeholder="Escribe un mensaje..."
+      :toolbar="[['send']]"
+      max-height="6rem"
+      :disable="msgs.some((x) => x.loading)"
+      @keyup.enter="addMsg()"
+      class="q-pt-none q-mb-sm row col-10"
+      v-model="text"
+      min-height="6rem"
+    >
       <template v-slot:send>
-        <q-btn :disable="msgs.some(x => x.loading)" @click="addMsg" round dense flat icon="send" style="" />
-
+        <q-btn
+          :disable="msgs.some((x) => x.loading)"
+          @click="addMsg"
+          round
+          dense
+          flat
+          icon="send"
+          style=""
+        />
       </template>
     </q-editor>
     <q-footer reveal>
@@ -34,15 +50,15 @@ const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 const text = ref('');
 const editor = ref(QEditor);
 const scroll = ref(QScrollArea);
-const msgs = ref(new Array<Message>())
+const msgs = ref(new Array<Message>());
 onMounted(() => {
   if (sessionStorage.getItem('messages')) {
     msgs.value = JSON.parse(sessionStorage.getItem('messages') || '');
   }
   editor.value?.focus();
 });
-function addMsg() {
-  if (msgs.value.some(x => x.loading)) {
+async function addMsg() {
+  if (msgs.value.some((x) => x.loading)) {
     return;
   }
   if (text.value && text.value.trim()) {
@@ -53,14 +69,13 @@ function addMsg() {
     text.value = '';
     scroll.value?.setScrollPosition('vertical', msgs.value.length * 1000, 500);
     sessionStorage.setItem('messages', JSON.stringify(msgs.value));
-    sendMsg()
+    await sendMsg();
   }
 }
-function sendMsg() {
-
+async function sendMsg() {
   // For text-only input, use the gemini-pro model
   const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-  let history = new Array<Message>;
+  let history = new Array<Message>();
   history = [...msgs.value];
   if (history.length > 1) {
     history.splice(history.length - 1, 1);
@@ -68,32 +83,47 @@ function sendMsg() {
   }
 
   const chat = model.startChat({
-    history: history?.map(h => { return { role: h.send ? 'user' : 'model', parts: h.text }; }),
+    history: history?.map((h) => {
+      return { role: h.send ? 'user' : 'model', parts: h.text };
+    }),
     generationConfig: {
       //maxOutputTokens: 100,
     },
   });
   const msg = msgs.value[msgs.value.length - 2].text;
-  chat.sendMessage(`responde solamente en formato markdown si presenta error el formato markdown por favor corrigelo: ${msg}`).then(result => {
-    if (msgs.value.some(x => x.loading)) {
-      let response = result.response.text();
-      const index = msgs.value.findIndex(x => x.loading);
+  try {
+    const result = await chat.sendMessageStream(
+      `responde solamente en formato markdown si presenta error el formato markdown por favor corrigelo: ${msg}`
+    );
+    if (msgs.value.some((x) => x.loading)) {
+      const index = msgs.value.findIndex((x) => x.loading);
+      for await (const chuck of result.stream) {
+        const content = chuck.text();
+        msgs.value[index].text += content;
+        scroll.value?.setScrollPosition(
+          'vertical',
+          msgs.value.length * 1000,
+          500
+        );
+      }
+      //let response = result.response.text();
+
       msgs.value[index].loading = false;
-      msgs.value[index].text = response
+
       sessionStorage.setItem('messages', JSON.stringify(msgs.value));
       editor.value?.focus();
     }
-  }).catch(() => {
-    if (msgs.value.some(x => x.loading)) {
-      const index = msgs.value.findIndex(x => x.loading);
+  } catch (error) {
+    if (msgs.value.some((x) => x.loading)) {
+      const index = msgs.value.findIndex((x) => x.loading);
       msgs.value[index].loading = false;
       sessionStorage.setItem('messages', JSON.stringify(msgs.value));
       editor.value?.focus();
     }
-  });
+  }
 }
 </script>
-<style scoped  lang="scss">
+<style scoped lang="scss">
 textarea {
   resize: none !important;
 }
