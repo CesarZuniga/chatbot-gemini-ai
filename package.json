@@ -17,9 +17,9 @@
     "@quasar/extras": "^1.16.4",
     "firebase": "^10.7.2",
     "quasar": "^2.8.0",
+    "quasar-ui-qmarkdown-v2": "^2.0.4",
     "vue": "^3.2.29",
     "vue-router": "^4.0.12",
-    "vue3-markdown": "^1.1.9",
     "vuefire": "^3.1.22"
   },
   "devDependencies": {

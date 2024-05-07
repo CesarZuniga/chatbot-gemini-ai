@@ -18,7 +18,8 @@
           bg-color="blue-grey-1"
           text-color=""
         >
-          <VMarkdownView :content="msg.text"> </VMarkdownView>
+          <!-- <VMarkdownView :content="msg.text"> </VMarkdownView> -->
+          <q-markdown :src="msg.text"></q-markdown>
           <q-inner-loading
             v-if="msg.loading"
             :showing="msg.loading"
@@ -33,8 +34,8 @@
 import { computed } from 'vue';
 import { useCurrentUser } from 'vuefire';
 import { Message } from './models';
-import { VMarkdownView } from 'vue3-markdown';
-import 'vue3-markdown/dist/style.css';
+import { QMarkdown } from 'quasar-ui-qmarkdown-v2';
+import 'quasar-ui-qmarkdown-v2/dist/index.css';
 const user = useCurrentUser();
 const props = defineProps({
   // v-model
