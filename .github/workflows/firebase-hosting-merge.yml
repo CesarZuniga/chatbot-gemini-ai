@@ -13,7 +13,7 @@ jobs:
       - name: replace-env-file-action
         uses: qgxpagamentos/replace-env-file-action@v1
         with:
-          path: ../.env
+          path: ./.env
           add_if_not_exist: true
           map: |
             KEY = '${{ secrets.API_KEY_GEMINI }}'
